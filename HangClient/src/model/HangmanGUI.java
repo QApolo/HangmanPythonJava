@@ -1,9 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+import jdk.nashorn.internal.scripts.JO;
 
 /**
  *
@@ -11,11 +12,14 @@ package model;
  */
 public class HangmanGUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form HangmanGUI
-     */
+    Client clhm;
+    Set <String> used;
+    char words[];
     public HangmanGUI() {
         initComponents();
+        clhm = new Client();
+        used = new HashSet<String>();
+        clhm.init();
     }
 
     /**
@@ -38,6 +42,11 @@ public class HangmanGUI extends javax.swing.JFrame {
         lbl_word.setText("_");
 
         try_btn.setText("Try Letter");
+        try_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try_btnActionPerformed(evt);
+            }
+        });
 
         used_lbl.setText("Used letters:");
 
@@ -55,11 +64,8 @@ public class HangmanGUI extends javax.swing.JFrame {
                         .addGap(82, 82, 82)
                         .addComponent(lbl_word))
                     .addComponent(try_btn)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(used_lbl)
-                            .addComponent(used_letters_lbl))))
+                    .addComponent(used_lbl)
+                    .addComponent(used_letters_lbl))
                 .addContainerGap(254, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -83,6 +89,30 @@ public class HangmanGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void try_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_try_btnActionPerformed
+       String current = letter_txt.getText();
+       if(used.contains(current)) {
+           System.out.println("Word already used");
+       } else {
+           used.add(current);
+           clhm.getLetter(current);
+       }
+       
+       String useds = "";
+       for(String c: used) {
+           useds = useds + c;
+       }
+       used_letters_lbl.setText(useds + "\n");
+       
+       words = clhm.getCurrentWord();
+       lbl_word.setText("");
+       useds = "";
+       for(int i = 0; i < words.length; i++){
+           useds += words[i]+"";
+       }
+       lbl_word.setText(useds);
+    }//GEN-LAST:event_try_btnActionPerformed
 
     /**
      * @param args the command line arguments

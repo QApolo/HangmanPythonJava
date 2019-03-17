@@ -32,13 +32,8 @@
                       <Component id="lbl_word" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="try_btn" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="used_lbl" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="used_letters_lbl" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="used_lbl" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="used_letters_lbl" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="254" max="32767" attributes="0"/>
           </Group>
@@ -78,6 +73,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Try Letter"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="try_btnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="used_lbl">
       <Properties>
