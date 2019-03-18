@@ -73,51 +73,55 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public int getCorrect() {
+        return correct;
+    }
+    public int getMistakes() {
+        return mistakes;
+    }
     public void getLetter(String current) {
-            while(correct < len_word && mistakes < 10) {
-        
-                //Scanner sr = new Scanner(System.in);
-               // String current = sr.nextLine();
-                out.print(current);
-                out.flush();
-                System.out.println("letter:" + current);
-                
-                int veredict = 0;
+            
+       // while(correct < len_word && mistakes < 10) {
+        out.print(current);
+        out.flush();
+        System.out.println("letter:" + current);
+
+        int veredict = 0;
+        try {
+            veredict = Integer.parseInt(stdIn.readLine());
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(veredict == 0) {
+            int n_coincidences = 0;
+            try {
+                n_coincidences = Integer.parseInt(stdIn.readLine());
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            correct += n_coincidences;
+            for(int i = 0; i < n_coincidences; i++) {
+                int positions = 0;
                 try {
-                    veredict = Integer.parseInt(stdIn.readLine());
+                    positions = Integer.parseInt(stdIn.readLine());
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if(veredict == 0) {
-                    int n_coincidences = 0;
-                    try {
-                        n_coincidences = Integer.parseInt(stdIn.readLine());
-                    } catch (IOException ex) {
-                        Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    correct += n_coincidences;
-                    for(int i = 0; i < n_coincidences; i++) {
-                        int positions = 0;
-                        try {
-                            positions = Integer.parseInt(stdIn.readLine());
-                        } catch (IOException ex) {
-                            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        words[positions] = current.charAt(0);
-                    }
-                    for(int j = 0; j < words.length; j++)
-                        System.out.print(words[j]);
-                    System.out.println("");
-                }
-                else {
-                    mistakes++;
-                }
-                return;
+                words[positions] = current.charAt(0);
             }
-            if(correct == len_word) {
-                System.out.println("You guessed all the letters correctly :D");
-            }
-            else
-                System.out.println("Good luck next time");
+            for(int j = 0; j < words.length; j++)
+                System.out.print(words[j]);
+            System.out.println("");
+        }
+        else {
+            mistakes++;
+        }
+            //return;
+            //}
+        if(correct >= len_word) {
+            System.out.println("You guessed all the letters correctly :D");
+        }
+        else if(mistakes >= 10)
+            System.out.println("Good luck next time");
     }
 }

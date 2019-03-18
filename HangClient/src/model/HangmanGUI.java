@@ -1,26 +1,131 @@
 
 package model;
 
+import java.awt.Color;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import jdk.nashorn.internal.scripts.JO;
 
 /**
  *
  * @author Carlo
  */
+class HangManDraw {
+    HashMap <Integer, String[]> mapeo;
+    public static String s[] = {
+        "       ",
+        "       ",       
+        "       ", 		
+        "       ",
+        "       ",
+        "---------------"};
+     public static String s2[] = {
+        "        ",
+        "|       ",       
+        "|       ", 		
+        "|       ",
+        "|       ",
+        "---------------"};
+      public static String s3[] = {
+        "--------",
+        "|       ",       
+        "|       ", 		
+        "|       ",
+        "|       ",
+        "---------------"};
+       public static String s4[] = {
+        "--------",
+        "|      |",       
+        "|       ", 		
+        "|       ",
+        "|       ",
+        "---------------"};
+       public static String s5[] = {
+        "--------",
+        "|      |",       
+        "|      o", 		
+        "|       ",
+        "|       ",
+        "---------------"};
+        public static String s6[] = {
+        "--------",
+        "|      |",       
+        "|      o", 		
+        "|      |",
+        "|       ",
+        "---------------"};
+        public static String s7[] = {
+        "--------",
+        "|      |",       
+        "|      o", 		
+        "|      |\\",
+        "|       ",
+        "---------------"};
+       public static String s8[] = {
+        "--------",
+        "|      |",       
+        "|      o", 		
+        "|     /|\\",
+        "|       ",
+        "---------------"};
+       public static String s9[] = {
+        "--------",
+        "|      |",       
+        "|      o", 		
+        "|     /|\\",
+        "|       \\",
+        "---------------"};
+        public static String s10[] = {
+        "--------",
+        "|      |",       
+        "|      o", 		
+        "|     /|\\",
+        "|     / \\",
+        "---------------"};
+        public String s0[] = {""};
+        public HangManDraw() {
+         mapeo = new HashMap<Integer, String[]>();
+         mapeo.put(0, s0);
+         mapeo.put(1, s);
+         mapeo.put(2, s2);
+         mapeo.put(3, s3);
+         mapeo.put(4, s4);
+         mapeo.put(5, s5);
+         mapeo.put(6, s6);
+         mapeo.put(7, s7);
+         mapeo.put(8, s8);
+         mapeo.put(9, s9);
+         mapeo.put(10, s10);
+         
+        }
+        public void printHangMan(int position) {
+            for(int i = 0; i < s.length; i++) {
+                System.out.println(s[i]);
+            }
+        }
+        public String[] getHangmanDraw(int pos) {
+            return mapeo.get(pos);
+        }
+}
 public class HangmanGUI extends javax.swing.JFrame {
-
+   
+	
     Client clhm;
     Set <String> used;
     char words[];
     public HangmanGUI() {
+        
+        
         initComponents();
         clhm = new Client();
         used = new HashSet<String>();
         clhm.init();
     }
+   
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,6 +141,9 @@ public class HangmanGUI extends javax.swing.JFrame {
         used_lbl = new javax.swing.JLabel();
         used_letters_lbl = new javax.swing.JLabel();
         letter_txt = new javax.swing.JTextField();
+        lbl_message = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        draw_text = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +160,11 @@ public class HangmanGUI extends javax.swing.JFrame {
 
         used_letters_lbl.setText("_");
 
+        draw_text.setEditable(false);
+        draw_text.setColumns(20);
+        draw_text.setRows(5);
+        jScrollPane1.setViewportView(draw_text);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -60,13 +173,20 @@ public class HangmanGUI extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(letter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(82, 82, 82)
-                        .addComponent(lbl_word))
-                    .addComponent(try_btn)
-                    .addComponent(used_lbl)
-                    .addComponent(used_letters_lbl))
-                .addContainerGap(254, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(letter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(82, 82, 82)
+                                .addComponent(lbl_word))
+                            .addComponent(try_btn)
+                            .addComponent(used_lbl)
+                            .addComponent(used_letters_lbl))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbl_message, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -80,28 +200,59 @@ public class HangmanGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(letter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                .addComponent(used_lbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(used_letters_lbl)
-                .addGap(68, 68, 68))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(80, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbl_message, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(used_lbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(used_letters_lbl)
+                        .addGap(26, 26, 26))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void try_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_try_btnActionPerformed
+        
        String current = letter_txt.getText();
        if(used.contains(current)) {
            System.out.println("Word already used");
+           lbl_message.setForeground(Color.red);
+           lbl_message.setText("Letter already in use");
        } else {
+           lbl_message.setText("");
            used.add(current);
            clhm.getLetter(current);
+           int mistakes = clhm.getMistakes();
+           int correct = clhm.getCorrect();
+           if(mistakes >= 10) {
+               JOptionPane.showMessageDialog(null, "You lost, better luck next time");
+               return;
+           }
+           else if(correct == clhm.len_word) {
+               JOptionPane.showMessageDialog(null, "You win, congratulations!");
+           }
+           
+           HangManDraw hmd = new HangManDraw();
+           
+           System.out.println("mistakes: " + mistakes);
+           String draw[] = hmd.getHangmanDraw(mistakes);
+           draw_text.setText("");
+           String hangcomplete = "";
+           for(int i = 0; i < draw.length; i++) {
+              hangcomplete += (draw[i])+"\n";
+           }
+            draw_text.setText(hangcomplete);
        }
        
        String useds = "";
        for(String c: used) {
-           useds = useds + c;
+           useds = useds + " " + c;
        }
        used_letters_lbl.setText(useds + "\n");
        
@@ -112,9 +263,10 @@ public class HangmanGUI extends javax.swing.JFrame {
            useds += words[i]+"";
        }
        lbl_word.setText(useds);
+       letter_txt.setText("");
     }//GEN-LAST:event_try_btnActionPerformed
-
-    /**
+    
+        /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -150,6 +302,9 @@ public class HangmanGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea draw_text;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbl_message;
     private javax.swing.JLabel lbl_word;
     private javax.swing.JTextField letter_txt;
     private javax.swing.JButton try_btn;
