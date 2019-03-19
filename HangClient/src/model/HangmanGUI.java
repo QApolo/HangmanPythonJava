@@ -144,6 +144,7 @@ public class HangmanGUI extends javax.swing.JFrame {
         lbl_message = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         draw_text = new javax.swing.JTextArea();
+        reset_btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -160,10 +161,29 @@ public class HangmanGUI extends javax.swing.JFrame {
 
         used_letters_lbl.setText("_");
 
+        letter_txt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                letter_txtActionPerformed(evt);
+            }
+        });
+        letter_txt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                letter_txtKeyReleased(evt);
+            }
+        });
+
         draw_text.setEditable(false);
         draw_text.setColumns(20);
         draw_text.setRows(5);
         jScrollPane1.setViewportView(draw_text);
+
+        reset_btn.setText("Reset");
+        reset_btn.setEnabled(false);
+        reset_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reset_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,6 +193,10 @@ public class HangmanGUI extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbl_message, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(letter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -181,18 +205,20 @@ public class HangmanGUI extends javax.swing.JFrame {
                             .addComponent(try_btn)
                             .addComponent(used_lbl)
                             .addComponent(used_letters_lbl))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbl_message, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(reset_btn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(try_btn)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(try_btn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(reset_btn)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
@@ -218,8 +244,9 @@ public class HangmanGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void try_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_try_btnActionPerformed
-        
        String current = letter_txt.getText();
+       if(current.equals(""))
+           return;
        if(used.contains(current)) {
            System.out.println("Word already used");
            lbl_message.setForeground(Color.red);
@@ -232,10 +259,11 @@ public class HangmanGUI extends javax.swing.JFrame {
            int correct = clhm.getCorrect();
            if(mistakes >= 10) {
                JOptionPane.showMessageDialog(null, "You lost, better luck next time");
-               return;
+               reset_btn.setEnabled(true);
            }
            else if(correct == clhm.len_word) {
                JOptionPane.showMessageDialog(null, "You win, congratulations!");
+               reset_btn.setEnabled(true);
            }
            
            HangManDraw hmd = new HangManDraw();
@@ -265,6 +293,28 @@ public class HangmanGUI extends javax.swing.JFrame {
        lbl_word.setText(useds);
        letter_txt.setText("");
     }//GEN-LAST:event_try_btnActionPerformed
+
+    private void letter_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_letter_txtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_letter_txtActionPerformed
+
+    private void letter_txtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_letter_txtKeyReleased
+        if(letter_txt.getText().length() >= 2) {
+            letter_txt.setText(letter_txt.getText().charAt(0)+"");
+        }
+    }//GEN-LAST:event_letter_txtKeyReleased
+
+    private void reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_btnActionPerformed
+       used = new HashSet<String>();
+       draw_text.setText("");
+       lbl_message.setText("");
+       used_letters_lbl.setText("");
+       lbl_word.setText("");
+       clhm.closeAll();
+       clhm = new Client();
+       clhm.init();
+       reset_btn.setEnabled(false);
+    }//GEN-LAST:event_reset_btnActionPerformed
     
         /**
      * @param args the command line arguments
@@ -307,6 +357,7 @@ public class HangmanGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_message;
     private javax.swing.JLabel lbl_word;
     private javax.swing.JTextField letter_txt;
+    private javax.swing.JButton reset_btn;
     private javax.swing.JButton try_btn;
     private javax.swing.JLabel used_lbl;
     private javax.swing.JLabel used_letters_lbl;

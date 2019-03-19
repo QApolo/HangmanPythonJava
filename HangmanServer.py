@@ -63,7 +63,7 @@ class Server:
 class HangGame:
 	def __init__(self, words = None):
 		if words == None:
-			self.words = ["maniaco", "perelman", "apolo"]
+			self.words = ["mexico", "brasil", "venezuela", "argentina", "uruguay", "guatemala", "belice", "ecuador", "brasil"]
 		else:
 			self.words = words
 	def chooseWord(self):
