@@ -288,14 +288,14 @@ public class HangmanGUI extends javax.swing.JFrame {
        lbl_word.setText("");
        useds = "";
        for(int i = 0; i < words.length; i++){
-           useds += words[i]+"";
+           useds += words[i]+" ";
        }
        lbl_word.setText(useds);
        letter_txt.setText("");
     }//GEN-LAST:event_try_btnActionPerformed
 
     private void letter_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_letter_txtActionPerformed
-        // TODO add your handling code here:
+        try_btnActionPerformed(evt);
     }//GEN-LAST:event_letter_txtActionPerformed
 
     private void letter_txtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_letter_txtKeyReleased
